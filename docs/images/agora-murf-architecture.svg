@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2300" height="1900" viewBox="0 0 2300 1900">
+<title>Kharcha Bolo — Agora and Murf voice architecture</title>
+<desc>A numbered voice round trip, session lifecycle, data boundaries, and failure handling. Cloud speech connects to local expense rules and Room storage through an authenticated relay.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#475569" stroke-width="1.7"/></marker></defs>
+<rect width="2300" height="1900" fill="#fffdf8"/>
+<text x="80" y="80.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="48" font-weight="700" fill="#334155">Kharcha Bolo</text>
+<text x="80" y="127.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="30" font-weight="400" fill="#334155">A voice expense round trip • Agora + Murf Falcon 2.1</text>
+<text x="80" y="169.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="23" font-weight="400" fill="#64748b">Cloud speech. Local expense decisions. A spoken answer based on what was actually saved.</text>
+<rect x="80" y="196" width="24" height="24" rx="15" fill="#e9f3ff" stroke="#3871a7" stroke-width="2.4"/>
+<path d="M95 199 Q92.0 195 89 198 M102 214 Q106 208.0 101 203" fill="none" stroke="#3871a7" stroke-width="1" opacity=".45"/>
+<text x="118" y="215.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="17" font-weight="700" fill="#3871a7">ANDROID APP</text>
+<rect x="590" y="196" width="24" height="24" rx="15" fill="#fff0df" stroke="#b86b22" stroke-width="2.4"/>
+<path d="M605 199 Q602.0 195 599 198 M612 214 Q616 208.0 611 203" fill="none" stroke="#b86b22" stroke-width="1" opacity=".45"/>
+<text x="628" y="215.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="17" font-weight="700" fill="#b86b22">AGORA / SPEECH PROVIDERS</text>
+<rect x="1320" y="196" width="24" height="24" rx="15" fill="#f1eaff" stroke="#8060a5" stroke-width="2.4"/>
+<path d="M1335 199 Q1332.0 195 1329 198 M1342 214 Q1346 208.0 1341 203" fill="none" stroke="#8060a5" stroke-width="1" opacity=".45"/>
+<text x="1358" y="215.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="17" font-weight="700" fill="#8060a5">PYTHON BACKEND</text>
+<rect x="1840" y="196" width="24" height="24" rx="15" fill="#e6f6e8" stroke="#4b8556" stroke-width="2.4"/>
+<path d="M1855 199 Q1852.0 195 1849 198 M1862 214 Q1866 208.0 1861 203" fill="none" stroke="#4b8556" stroke-width="1" opacity=".45"/>
+<text x="1878" y="215.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="17" font-weight="700" fill="#4b8556">LOCAL ROOM DB</text>
+<rect x="80" y="260" width="440" height="245" rx="15" fill="#e9f3ff" stroke="#3871a7" stroke-width="2.4"/>
+<path d="M95 263 Q300.0 259 505 262 M518 278 Q522 382.5 517 488" fill="none" stroke="#3871a7" stroke-width="1" opacity=".45"/>
+<text x="102" y="291.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="16" font-weight="700" fill="#3871a7">ANDROID • MICROPHONE</text>
+<text x="102" y="332.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">1  Speak an expense</text>
+<text x="102" y="372.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Grant microphone permission.</text>
+<text x="102" y="398.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Start an Agora voice session.</text>
+<text x="102" y="424.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Native RTC mic publishes audio.</text>
+<text x="102" y="450.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Offline Vosk capture is cancelled.</text>
+<rect x="630" y="260" width="440" height="245" rx="15" fill="#fff0df" stroke="#b86b22" stroke-width="2.4"/>
+<path d="M645 263 Q850.0 259 1055 262 M1068 278 Q1072 382.5 1067 488" fill="none" stroke="#b86b22" stroke-width="1" opacity=".45"/>
+<text x="652" y="291.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="16" font-weight="700" fill="#b86b22">AGORA • RTC / RTM</text>
+<text x="652" y="332.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">2  Transport live audio</text>
+<text x="652" y="372.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">RTC carries microphone audio.</text>
+<text x="652" y="398.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">RTM carries transcripts and state.</text>
+<text x="652" y="424.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Client subscribes to agent audio.</text>
+<text x="652" y="450.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Tokens match channel + user ID.</text>
+<rect x="1180" y="260" width="440" height="245" rx="15" fill="#fff0df" stroke="#b86b22" stroke-width="2.4"/>
+<path d="M1195 263 Q1400.0 259 1605 262 M1618 278 Q1622 382.5 1617 488" fill="none" stroke="#b86b22" stroke-width="1" opacity=".45"/>
+<text x="1202" y="291.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="16" font-weight="700" fill="#b86b22">CLOUD • DEEPGRAM NOVA-3</text>
+<text x="1202" y="332.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">3  Recognize the speech</text>
+<text x="1202" y="372.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Language: multi (Hindi / English).</text>
+<text x="1202" y="398.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Speech becomes a user transcript.</text>
+<text x="1202" y="424.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Agent manages turns / interruptions.</text>
+<text x="1202" y="450.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Empty transcript → ask to repeat.</text>
+<rect x="1730" y="260" width="440" height="245" rx="15" fill="#f1eaff" stroke="#8060a5" stroke-width="2.4"/>
+<path d="M1745 263 Q1950.0 259 2155 262 M2168 278 Q2172 382.5 2167 488" fill="none" stroke="#8060a5" stroke-width="1" opacity=".45"/>
+<text x="1752" y="291.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="16" font-weight="700" fill="#8060a5">PYTHON • CUSTOM-MODEL ENDPOINT</text>
+<text x="1752" y="332.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">4  Request an answer</text>
+<text x="1752" y="372.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">POST /v1/document/chat/completions</text>
+<text x="1752" y="398.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Bearer token authenticates relay.</text>
+<text x="1752" y="424.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Create a unique request ID.</text>
+<text x="1752" y="450.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Stream an OpenAI-style SSE reply.</text>
+<rect x="1730" y="595" width="440" height="245" rx="15" fill="#e9f3ff" stroke="#3871a7" stroke-width="2.4"/>
+<path d="M1745 598 Q1950.0 594 2155 597 M2168 613 Q2172 717.5 2167 823" fill="none" stroke="#3871a7" stroke-width="1" opacity=".45"/>
+<text x="1752" y="626.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="16" font-weight="700" fill="#3871a7">ANDROID ↔ PYTHON • HTTPS</text>
+<text x="1752" y="667.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">5  Deliver work to phone</text>
+<text x="1752" y="707.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Phone long-polls /v1/document/poll.</text>
+<text x="1752" y="733.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Check /v1/document/request-status.</text>
+<text x="1752" y="759.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Read transcript + request ID.</text>
+<text x="1752" y="785.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">UI stays responsive while polling.</text>
+<rect x="1180" y="595" width="440" height="245" rx="15" fill="#e9f3ff" stroke="#3871a7" stroke-width="2.4"/>
+<path d="M1195 598 Q1400.0 594 1605 597 M1618 613 Q1622 717.5 1617 823" fill="none" stroke="#3871a7" stroke-width="1" opacity=".45"/>
+<text x="1202" y="626.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="16" font-weight="700" fill="#3871a7">ANDROID • BASIC LOCAL RULES</text>
+<text x="1202" y="667.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">6  Interpret the expense</text>
+<text x="1202" y="707.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Normalize Hindi number words.</text>
+<text x="1202" y="733.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Extract items, amounts, or query.</text>
+<text x="1202" y="759.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Validate positive, finite amounts.</text>
+<text x="1202" y="785.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Assign category using keywords.</text>
+<rect x="630" y="595" width="440" height="245" rx="15" fill="#e6f6e8" stroke="#4b8556" stroke-width="2.4"/>
+<path d="M645 598 Q850.0 594 1055 597 M1068 613 Q1072 717.5 1067 823" fill="none" stroke="#4b8556" stroke-width="1" opacity=".45"/>
+<text x="652" y="626.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="16" font-weight="700" fill="#4b8556">ANDROID • KHARCHA_BOLO.DB</text>
+<text x="652" y="667.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">7  Save or read Room</text>
+<text x="652" y="707.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Purchases → insert expense batch.</text>
+<text x="652" y="733.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Queries → read saved totals.</text>
+<text x="652" y="759.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Store item, amount, and category.</text>
+<text x="652" y="785.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Expense database stays on phone.</text>
+<rect x="80" y="595" width="440" height="245" rx="15" fill="#e9f3ff" stroke="#3871a7" stroke-width="2.4"/>
+<path d="M95 598 Q300.0 594 505 597 M518 613 Q522 717.5 517 823" fill="none" stroke="#3871a7" stroke-width="1" opacity=".45"/>
+<text x="102" y="626.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="16" font-weight="700" fill="#3871a7">ANDROID • EXPENSE EXECUTOR</text>
+<text x="102" y="667.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">8  Return the real result</text>
+<text x="102" y="707.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Build a saved / total / error reply.</text>
+<text x="102" y="733.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Memoize response by request ID.</text>
+<text x="102" y="759.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Retries reuse the cached response.</text>
+<text x="102" y="785.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Never replay an older purchase.</text>
+<rect x="80" y="930" width="440" height="245" rx="15" fill="#f1eaff" stroke="#8060a5" stroke-width="2.4"/>
+<path d="M95 933 Q300.0 929 505 932 M518 948 Q522 1052.5 517 1158" fill="none" stroke="#8060a5" stroke-width="1" opacity=".45"/>
+<text x="102" y="961.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="16" font-weight="700" fill="#8060a5">PYTHON • RELAY RESULT</text>
+<text x="102" y="1002.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">9  Complete the stream</text>
+<text x="102" y="1042.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Phone POSTs /v1/document/result.</text>
+<text x="102" y="1068.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Match session token + request ID.</text>
+<text x="102" y="1094.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Emit text deltas, then [DONE].</text>
+<text x="102" y="1120.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Return actual local result to Agora.</text>
+<rect x="630" y="930" width="440" height="245" rx="15" fill="#fff0df" stroke="#b86b22" stroke-width="2.4"/>
+<path d="M645 933 Q850.0 929 1055 932 M1068 948 Q1072 1052.5 1067 1158" fill="none" stroke="#b86b22" stroke-width="1" opacity=".45"/>
+<text x="652" y="961.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="16" font-weight="700" fill="#b86b22">CLOUD • MURF TTS</text>
+<text x="652" y="1002.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">10  Synthesize Hindi</text>
+<text x="652" y="1042.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Model: falcon-2.1</text>
+<text x="652" y="1068.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Voice: hi-IN-namrita (Namrita)</text>
+<text x="652" y="1094.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Style: Conversational • hi-IN</text>
+<text x="652" y="1120.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Global WebSocket • 24 kHz audio</text>
+<rect x="1180" y="930" width="440" height="245" rx="15" fill="#fff0df" stroke="#b86b22" stroke-width="2.4"/>
+<path d="M1195 933 Q1400.0 929 1605 932 M1618 948 Q1622 1052.5 1617 1158" fill="none" stroke="#b86b22" stroke-width="1" opacity=".45"/>
+<text x="1202" y="961.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="16" font-weight="700" fill="#b86b22">AGORA • RTC DOWNLINK</text>
+<text x="1202" y="1002.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">11  Play agent audio</text>
+<text x="1202" y="1042.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Agora receives synthesized speech.</text>
+<text x="1202" y="1068.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Agent publishes audio into channel.</text>
+<text x="1202" y="1094.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Phone subscribes to agent track.</text>
+<text x="1202" y="1120.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">RTM updates transcript / turn state.</text>
+<rect x="1730" y="930" width="440" height="245" rx="15" fill="#e9f3ff" stroke="#3871a7" stroke-width="2.4"/>
+<path d="M1745 933 Q1950.0 929 2155 932 M2168 948 Q2172 1052.5 2167 1158" fill="none" stroke="#3871a7" stroke-width="1" opacity=".45"/>
+<text x="1752" y="961.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="16" font-weight="700" fill="#3871a7">ANDROID • SPEAKER + DASHBOARD</text>
+<text x="1752" y="1002.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">12  Hear the answer</text>
+<text x="1752" y="1042.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Play the spoken confirmation.</text>
+<text x="1752" y="1068.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Room flows update expense cards.</text>
+<text x="1752" y="1094.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Show transcript and cloud status.</text>
+<text x="1752" y="1120.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="20" font-weight="400" fill="#334155">Keep the app in the foreground.</text>
+<polyline points="530,382 616,382" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M602.8362615716444 389.19138307906303 L616 382 L602.8362615716444 374.80861692093697" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1080,382 1166,382" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M1152.8362615716444 389.19138307906303 L1166 382 L1152.8362615716444 374.80861692093697" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1630,382 1716,382" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M1702.8362615716444 389.19138307906303 L1716 382 L1702.8362615716444 374.80861692093697" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="530,1052 616,1052" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M602.8362615716444 1059.1913830790631 L616 1052 L602.8362615716444 1044.8086169209369" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1080,1052 1166,1052" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M1152.8362615716444 1059.1913830790631 L1166 1052 L1152.8362615716444 1044.8086169209369" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1630,1052 1716,1052" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M1702.8362615716444 1059.1913830790631 L1716 1052 L1702.8362615716444 1044.8086169209369" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1720,717 1634,717" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M1647.1637384283556 709.808616920937 L1634 717 L1647.1637384283556 724.191383079063" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1170,717 1084,717" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M1097.1637384283556 709.808616920937 L1084 717 L1097.1637384283556 724.191383079063" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="620,717 534,717" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M547.1637384283556 709.808616920937 L534 717 L547.1637384283556 724.191383079063" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1950,517 1950,580" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M1942.8086169209369 566.8362615716444 L1950 580 L1957.1913830790631 566.8362615716444" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="300,852 300,915" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M292.80861692093697 901.8362615716444 L300 915 L307.19138307906303 901.8362615716444" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="80" y="1290.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="30" font-weight="700" fill="#334155">Session lifecycle — a separate control plane</text>
+<rect x="80" y="1322" width="400" height="152" rx="15" fill="#fff8dd" stroke="#9b8848" stroke-width="2.4"/>
+<path d="M95 1325 Q280.0 1321 465 1324 M478 1340 Q482 1398.0 477 1457" fill="none" stroke="#9b8848" stroke-width="1" opacity=".45"/>
+<text x="97" y="1358.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="24" font-weight="700" fill="#334155">Bootstrap</text>
+<text x="97" y="1394.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="18" font-weight="400" fill="#334155">GET /health → bootstrap</text>
+<text x="97" y="1417.4" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="18" font-weight="400" fill="#334155">Backend issues RTC / RTM tokens.</text>
+<polyline points="487,1397 512,1397" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M498.8362615716444 1404.1913830790631 L512 1397 L498.8362615716444 1389.8086169209369" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="520" y="1322" width="400" height="152" rx="15" fill="#fff8dd" stroke="#9b8848" stroke-width="2.4"/>
+<path d="M535 1325 Q720.0 1321 905 1324 M918 1340 Q922 1398.0 917 1457" fill="none" stroke="#9b8848" stroke-width="1" opacity=".45"/>
+<text x="537" y="1358.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="24" font-weight="700" fill="#334155">Connect</text>
+<text x="537" y="1394.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="18" font-weight="400" fill="#334155">Log in to RTM, subscribe,</text>
+<text x="537" y="1417.4" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="18" font-weight="400" fill="#334155">then join the RTC channel.</text>
+<polyline points="927,1397 952,1397" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M938.8362615716444 1404.1913830790631 L952 1397 L938.8362615716444 1389.8086169209369" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="960" y="1322" width="400" height="152" rx="15" fill="#fff8dd" stroke="#9b8848" stroke-width="2.4"/>
+<path d="M975 1325 Q1160.0 1321 1345 1324 M1358 1340 Q1362 1398.0 1357 1457" fill="none" stroke="#9b8848" stroke-width="1" opacity=".45"/>
+<text x="977" y="1358.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="24" font-weight="700" fill="#334155">Invite agent</text>
+<text x="977" y="1394.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="18" font-weight="400" fill="#334155">POST /v1/conversation/join</text>
+<text x="977" y="1417.4" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="18" font-weight="400" fill="#334155">Create an authenticated relay.</text>
+<polyline points="1367,1397 1392,1397" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M1378.8362615716444 1404.1913830790631 L1392 1397 L1378.8362615716444 1389.8086169209369" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1400" y="1322" width="400" height="152" rx="15" fill="#fff8dd" stroke="#9b8848" stroke-width="2.4"/>
+<path d="M1415 1325 Q1600.0 1321 1785 1324 M1798 1340 Q1802 1398.0 1797 1457" fill="none" stroke="#9b8848" stroke-width="1" opacity=".45"/>
+<text x="1417" y="1358.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="24" font-weight="700" fill="#334155">Run / renew</text>
+<text x="1417" y="1394.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="18" font-weight="400" fill="#334155">Poll expense work; renew tokens.</text>
+<text x="1417" y="1417.4" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="18" font-weight="400" fill="#334155">Typed input uses the think action.</text>
+<polyline points="1807,1397 1832,1397" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M1818.8362615716444 1404.1913830790631 L1832 1397 L1818.8362615716444 1389.8086169209369" fill="none" stroke="#475569" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1840" y="1322" width="400" height="152" rx="15" fill="#fff8dd" stroke="#9b8848" stroke-width="2.4"/>
+<path d="M1855 1325 Q2040.0 1321 2225 1324 M2238 1340 Q2242 1398.0 2237 1457" fill="none" stroke="#9b8848" stroke-width="1" opacity=".45"/>
+<text x="1857" y="1358.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="24" font-weight="700" fill="#334155">Stop / release</text>
+<text x="1857" y="1394.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="18" font-weight="400" fill="#334155">Stop, switch engine, or background:</text>
+<text x="1857" y="1417.4" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="18" font-weight="400" fill="#334155">release mic + request agent leave.</text>
+<rect x="80" y="1545" width="700" height="195" rx="15" fill="#fff8dd" stroke="#9b8848" stroke-width="2.4"/>
+<path d="M95 1548 Q430.0 1544 765 1547 M778 1563 Q782 1642.5 777 1723" fill="none" stroke="#9b8848" stroke-width="1" opacity=".45"/>
+<text x="102" y="1586.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">Data boundary</text>
+<text x="102" y="1630.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="21" font-weight="400" fill="#334155">Audio + transcripts travel via cloud.</text>
+<text x="102" y="1657.3" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="21" font-weight="400" fill="#334155">Rules, validation, and Room run locally.</text>
+<text x="102" y="1684.6" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="21" font-weight="400" fill="#334155">Nano is not used in this Agora path.</text>
+<rect x="820" y="1545" width="700" height="195" rx="15" fill="#fff8dd" stroke="#9b8848" stroke-width="2.4"/>
+<path d="M835 1548 Q1170.0 1544 1505 1547 M1518 1563 Q1522 1642.5 1517 1723" fill="none" stroke="#9b8848" stroke-width="1" opacity=".45"/>
+<text x="842" y="1586.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">Credentials &amp; access</text>
+<text x="842" y="1630.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="21" font-weight="400" fill="#334155">App Certificate + Murf key stay on server.</text>
+<text x="842" y="1657.3" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="21" font-weight="400" fill="#334155">Android receives short-lived tokens.</text>
+<text x="842" y="1684.6" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="21" font-weight="400" fill="#334155">Demo bootstrap needs production auth.</text>
+<rect x="1560" y="1545" width="700" height="195" rx="15" fill="#fff8dd" stroke="#9b8848" stroke-width="2.4"/>
+<path d="M1575 1548 Q1910.0 1544 2245 1547 M2258 1563 Q2262 1642.5 2257 1723" fill="none" stroke="#9b8848" stroke-width="1" opacity=".45"/>
+<text x="1582" y="1586.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="26" font-weight="700" fill="#334155">Recovery &amp; scope</text>
+<text x="1582" y="1630.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="21" font-weight="400" fill="#334155">Blank speech gets a normal Hindi retry.</text>
+<text x="1582" y="1657.3" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="21" font-weight="400" fill="#334155">Expired or cancelled requests are rejected.</text>
+<text x="1582" y="1684.6" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="21" font-weight="400" fill="#334155">End session to change voice settings.</text>
+<text x="80" y="1800.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="21" font-weight="400" fill="#64748b">Wire names “document” are inherited from the reference demo; this app relays expense requests.</text>
+<text x="80" y="1840.0" font-family="Chalkboard SE, Comic Sans MS, sans-serif" font-size="21" font-weight="400" fill="#64748b">Cloud Agora mode is explicit. Offline Hindi voice and optional Nano engines remain separate choices.</text>
+</svg>

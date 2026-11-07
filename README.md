@@ -2,6 +2,14 @@
 
 An Android Diwali expense tracker with bundled offline Hindi voice input, optional on-device Gemini Nano inference, Room storage, category totals, and a budget dashboard. Built with Kotlin and Jetpack Compose.
 
+## Agora + Murf architecture
+
+A detailed view of the cloud voice round trip, local expense storage, session lifecycle, and credential boundaries.
+
+[![Kharcha Bolo architecture: Agora RTC/RTM, multilingual speech recognition, local expense relay and Room database, and Murf Namrita Hindi TTS](docs/images/agora-murf-architecture.png)](docs/images/agora-murf-architecture.svg)
+
+[Open the full-size diagram](docs/images/agora-murf-architecture.svg) · [Editable Excalidraw source](docs/images/agora-murf-architecture.excalidraw)
+
 ## How it works
 
 1. Tap the mic and grant microphone permission, type an expense using the keyboard button, or select a suggested phrase.
