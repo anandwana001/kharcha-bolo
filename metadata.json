@@ -1,0 +1,6 @@
+{
+  "name": "Kharcha Bolo",
+  "description": "Zero-network offline Hinglish Diwali expense logger using Gemini Nano 4 on-device agentic workflows and Room database.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
