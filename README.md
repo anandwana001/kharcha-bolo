@@ -104,4 +104,3 @@ All paths below are under `app/src/main/java/com/example/`:
 | `data/` | Room entities, DAO, database |
 | `telemetry/NetworkMonitor.kt` | Airplane state and placeholder demo metrics |
 
-Original [AI Studio project](https://ai.studio/apps/21484df9-e3d1-4132-896e-37d049bf58a5).
