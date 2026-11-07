@@ -234,6 +234,7 @@ fun KharchaBoloScreen(
                 transcription = transcription,
                 isProcessing = isProcessing,
                 statusMessage = if (isProcessing) engineStatus else speechStatus,
+                isCloud = selectedEngine == com.example.ai.AiEngineType.AGORA_CONVERSATIONAL_CLOUD,
                 onStartListening = {
                     val hasPerm = ContextCompat.checkSelfPermission(
                         context,
@@ -264,7 +265,10 @@ fun KharchaBoloScreen(
         ) {
             // 1. Airplane Mode Telemetry HUD
             item {
-                AirplaneModeHud(
+                if (selectedEngine == com.example.ai.AiEngineType.AGORA_CONVERSATIONAL_CLOUD) {
+                    Text("Agora cloud voice • Internet required. Audio leaves this device; expenses stay in local storage.",
+                        color = DiwaliGold, modifier = Modifier.padding(12.dp))
+                } else AirplaneModeHud(
                     telemetry = telemetry,
                     isCameraDemoMode = cameraDemoMode,
                     onToggleAirplane = { viewModel.toggleAirplaneModeSim() },
@@ -275,7 +279,7 @@ fun KharchaBoloScreen(
             // 2. Camera Demo Proof Overlay (when toggled on)
             item {
                 CameraDemoOverlay(
-                    isVisible = cameraDemoMode,
+                    isVisible = cameraDemoMode && selectedEngine != com.example.ai.AiEngineType.AGORA_CONVERSATIONAL_CLOUD,
                     latencyMs = lastLatencyMs,
                     engineName = lastEngineUsed
                 )

@@ -76,7 +76,7 @@ fun EngineSelectorSheet(
                         color = Color(0xFFFFF8E7)
                     )
                     Text(
-                        text = "On-device AI • Agora coming later",
+                        text = "Choose offline processing or Agora cloud voice",
                         fontSize = 12.sp,
                         color = Color(0xFFFFD180)
                     )
@@ -134,10 +134,11 @@ fun EngineSelectorSheet(
                 isSelected = selectedEngine == AiEngineType.AGORA_CONVERSATIONAL_CLOUD,
                 icon = Icons.Default.RecordVoiceOver,
                 title = "Agora Conversational AI",
-                badge = "Coming later",
-                description = "Not connected yet. Choose one of the on-device engines.",
+                badge = "Cloud audio • Internet required",
+                description = "Live Agora voice and spoken replies. Audio leaves the device; expense rules and storage run locally.",
                 onClick = {
-                    // Cloud integration is intentionally unavailable.
+                    onSelectEngine(AiEngineType.AGORA_CONVERSATIONAL_CLOUD)
+                    onDismiss()
                 }
             )
 
@@ -171,7 +172,7 @@ fun EngineSelectorSheet(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "Agora integration is planned for later and is currently unavailable.",
+                            text = "Agora cloud mode sends audio and transcripts through Agora and its speech providers. It requires internet. The developer works at Agora.",
                             fontSize = 11.sp,
                             color = Color(0xFFE3F2FD),
                             lineHeight = 16.sp

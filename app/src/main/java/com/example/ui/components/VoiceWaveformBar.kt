@@ -64,6 +64,7 @@ fun VoiceWaveformBar(
     onStopListening: () -> Unit,
     onOpenKeyboardInput: () -> Unit,
     statusMessage: String = "",
+    isCloud: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
@@ -214,7 +215,7 @@ fun VoiceWaveformBar(
                         color = if (isListening) DiwaliGold else Color.White
                     )
                     Text(
-                        text = if (isListening) "Zero Net" else "Kharcha Bolo",
+                        text = if (isCloud) "Cloud audio" else if (isListening) "Offline" else "Kharcha Bolo",
                         fontSize = 10.sp,
                         color = Color(0xFFFFD180).copy(alpha = 0.7f)
                     )

@@ -97,7 +97,7 @@ class KharchaAgentManager(private val context: Context, private val expenseDao: 
                         AiEngineType.LOCAL_OFFLINE -> executeBasicVoice(input, start)
                         AiEngineType.GEMINI_NANO_4_AGENT -> executeAgent(input, start)
                         AiEngineType.GEMINI_NANO_PROMPT_API -> executePrompt(input, start)
-                        AiEngineType.AGORA_CONVERSATIONAL_CLOUD -> error("Agora is not connected yet. Select an on-device engine.")
+                        AiEngineType.AGORA_CONVERSATIONAL_CLOUD -> error("Use the microphone to start an Agora cloud conversation.")
                     }
                 }.also { _status.value = "Request completed locally." }
             } catch (e: kotlinx.coroutines.TimeoutCancellationException) {

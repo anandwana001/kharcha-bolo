@@ -108,7 +108,7 @@ fun QuickHinglishChips(
                 letterSpacing = 0.5.sp
             )
             Text(
-                text = "Zero Network",
+                text = "Local storage",
                 fontSize = 10.sp,
                 color = Color.White.copy(alpha = 0.6f)
             )

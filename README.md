@@ -21,7 +21,7 @@ An empty database receives four sample expenses totaling ₹2,750 when the ViewM
 | Basic offline voice (default) | Bundled Hindi speech, spoken-number normalization, local expense rules, and Room writes. | Works on emulators and phones without Nano. No internet or system speech-pack setup required. |
 | AICore agentic | ML Kit `AgentRunner` with a preview/FULL Nano model and registered expense AppFunctions. Collects text and tool events through completion. Only tools write expenses; there is no second parser write. | Supported Nano hardware and AICore Developer Preview access. This app's current AppFunctions service requires Android 16+. Full inference still needs verification on eligible hardware. |
 | Offline Prompt API | ML Kit `Generation` client, model availability/download checks, structured-output capability check, and typed expense extraction. Validates every item before a batch write; total queries do not write. | Supported Gemini Nano hardware with AICore and structured-output capability. A generic emulator or any Android phone is not sufficient. |
-| Agora | Disabled in the selector; direct execution returns an explicit not-connected error. | Planned for later. No Agora session or cloud inference is implemented. |
+| Agora cloud voice | RTC/RTM audio and transcripts, backend token/agent lifecycle, custom-LLM relay into local expense rules and Room, spoken replies through Agora. | Explicit cloud mode, internet and configured backend required; separate from offline engines. |
 | Firebase AI | Inherited dependency; no generation calls. | Unused by these workflows. |
 
 Both Nano paths check feature status before inference. Downloadable models are downloaded with progress; initial setup needs internet. Inference runs locally after the model is available. Downloading/unsupported models produce actionable messages. Requests are serialized, processing state resets on failures, and cancellation is propagated. Agent failures can happen after a successful tool write: check the expense list before retrying. The app does not automatically retry agent writes.
@@ -104,4 +104,20 @@ All paths below are under `app/src/main/java/com/example/`:
 | `data/` | Room entities, DAO, database |
 | `telemetry/NetworkMonitor.kt` | Airplane state and placeholder demo metrics |
 
-Original [AI Studio project](https://ai.studio/apps/21484df9-e3d1-4132-896e-37d049bf58a5).
+
+
+## Agora branch
+
+The `feature/agora-voice` branch adapts the reference Android demo at `/Users/akshaynandwana/Desktop/agent-quickstart-android`. See [setup](docs/setup.md), [troubleshooting](docs/troubleshooting.md), and the [source map](docs/agora-integration.md).
+
+Configure credentials only in ignored `server/.env.local`. Set `PUBLIC_BASE_URL` there and `QUICKSTART_SERVER_URL` in ignored root `local.properties` to the same HTTPS tunnel URL. Start the reference-derived Python backend with `./server/run.sh` from an activated Python environment, and use `./server/tunnel.sh --provider ngrok` for local mobile access. Dependencies are listed in `server/requirements-dev.txt`. Rebuild after changing the Android URL.
+
+Select **Agora Conversational AI**, then tap the mic to start or stop a live session. Permission is requested before publishing audio. Switching engines or backgrounding the app stops local cloud audio and requests agent cleanup. Offline Vosk capture is cancelled before Agora captures the mic. Typed commands during a live Agora session are sent using the reference's think action.
+
+Agora audio and transcripts travel through cloud infrastructure. Expense requests return through the reference's authenticated custom-model relay to this phone, where basic expense rules read/write Room and return the actual result for spoken playback. This is not Nano inference. Relay request IDs prevent repeated polling/submission from saving the same request twice during a session. Keep the app in the foreground. The current backend uses multilingual Hindi/English recognition and Murf Namrita (`hi-IN-namrita`), Falcon 2.1 (`falcon-2.1`), Conversational style for Hindi speech. Human conversational accuracy still needs validation. Default offline Hindi mode remains available.
+
+The sample backend is intended for development: its bootstrap endpoints do not implement application-user authentication. Keep the tunnel temporary. App Certificates and model-provider keys are never compiled into the APK. The developer works at Agora.
+
+Run backend tests with `python -m pytest server/tests`. The optional `AgoraExpenseSmokeTest` uses a real project and is skipped unless instrumentation argument `runAgora=1` is supplied. It checks agent/channel connection and a text-triggered expense relay; it does not prove a human spoken conversation.
+
+Agora branch validation: 28 Android unit tests and 16 backend tests passed. The live Agora smoke test verified RTC/RTM connection, agent join, a ₹500 text-triggered expense round trip, and stop. Human spoken conversation and Hindi cloud-provider support remain unverified.

@@ -18,7 +18,7 @@ enum class AiEngineType(val displayName: String, val badge: String, val descript
     ),
     AGORA_CONVERSATIONAL_CLOUD(
         displayName = "Agora Conversational AI",
-        badge = "Coming later",
-        description = "Not connected yet."
+        badge = "Cloud voice • Internet required",
+        description = "Agora cloud speech and spoken replies with local expense storage."
     )
 }

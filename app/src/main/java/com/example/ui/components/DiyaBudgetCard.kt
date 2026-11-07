@@ -149,7 +149,7 @@ fun DiyaBudgetCard(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "Zero Network",
+                                text = "Local storage",
                                 fontSize = 9.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = DiwaliGold

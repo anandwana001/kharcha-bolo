@@ -1,3 +1,4 @@
+import java.util.Properties
 import com.google.gms.googleservices.GoogleServicesPlugin.MissingGoogleServicesStrategy
 
 plugins {
@@ -8,12 +9,20 @@ plugins {
   alias(libs.plugins.google.services)
 }
 
+val agoraLocalProperties = Properties().apply {
+  rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+}
+
 android {
   namespace = "com.example"
   compileSdk { version = release(37) }
 
   defaultConfig {
+    buildConfigField("String", "QUICKSTART_SERVER_URL", "\"" + (agoraLocalProperties.getProperty("QUICKSTART_SERVER_URL", "")).replace("\\", "\\\\").replace("\"", "\\\"") + "\"")
     applicationId = "com.aistudio.kharchabolo.diwali"
+    providers.gradleProperty("targetAbi").orNull?.let { requestedAbi ->
+      ndk { abiFilters += requestedAbi }
+    }
     minSdk = 26
     targetSdk = 36
     versionCode = 1
@@ -22,8 +31,7 @@ android {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
-  // Do not remove or modify these signingConfigs. They are necessary for building, installing,
-  // and updating Android apps in AI Studio.
+  // Use the supplied signing keys for compatible app updates.
   signingConfigs {
     create("release") {
       val keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
@@ -45,13 +53,11 @@ android {
       isCrunchPngs = false
       isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      // Do not remove or modify this signingConfig assignment. It is necessary for Android apps in
-      // AI Studio.
+      // Keep signing consistent for app updates.
       signingConfig = signingConfigs.getByName("release")
     }
     debug {
-      // Do not remove or modify this signingConfig assignment. It is necessary for Android apps in
-      // AI Studio.
+      // Keep signing consistent for app updates.
       signingConfig = signingConfigs.getByName(
         if (rootProject.file("debug.keystore").exists()) "debugConfig" else "debug"
       )
@@ -90,6 +96,9 @@ googleServices { missingGoogleServicesStrategy = MissingGoogleServicesStrategy.W
 // Some unused dependencies are commented out below instead of being removed.
 // This makes it easy to add them back in the future if needed.
 dependencies {
+  implementation("io.agora.rtc:voice-sdk:4.6.4")
+  implementation("io.agora.rtm:rtm-sdk-lite:2.3.0")
+  implementation("com.squareup.retrofit2:converter-gson:2.12.0")
   implementation("com.alphacephei:vosk-android:0.3.75@aar")
   implementation("net.java.dev.jna:jna:5.18.1@aar")
   implementation(platform(libs.androidx.compose.bom))

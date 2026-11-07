@@ -13,6 +13,8 @@ import com.example.data.CategorySummary
 import com.example.data.ExpenseEntity
 import com.example.telemetry.NetworkMonitor
 import com.example.telemetry.TelemetryState
+import com.example.agora.AgoraExpenseController
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -41,9 +43,7 @@ class KharchaBoloViewModel(application: Application) : AndroidViewModel(applicat
 
     val telemetryState: StateFlow<TelemetryState> = networkMonitor.telemetry
 
-    val isListening: StateFlow<Boolean> = voiceManager.isListening
-    val audioLevel: StateFlow<Float> = voiceManager.audioRms
-    val transcription: StateFlow<String> = voiceManager.transcription
+
 
     private val _budget = MutableStateFlow(25000.0)
     val budget: StateFlow<Double> = _budget.asStateFlow()
@@ -53,7 +53,19 @@ class KharchaBoloViewModel(application: Application) : AndroidViewModel(applicat
 
     val isAiCoreAvailable = agentManager.agentReady
     val engineStatus = agentManager.status
-    val speechStatus = voiceManager.status
+    val agora = AgoraExpenseController(application) { question ->
+        agentManager.execute(question, AiEngineType.LOCAL_OFFLINE).also { recordAgoraResult(it) }
+    }
+    val isListening = combine(voiceManager.isListening, agora.active, agora.busy, selectedEngine) { local, cloud, busy, engine ->
+        if (engine == AiEngineType.AGORA_CONVERSATIONAL_CLOUD) cloud || busy else local
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+    val audioLevel = voiceManager.audioRms
+    val transcription = combine(voiceManager.transcription, agora.snapshot, selectedEngine) { local, snapshot, engine ->
+        if (engine == AiEngineType.AGORA_CONVERSATIONAL_CLOUD) snapshot.transcriptTurns.lastOrNull()?.text.orEmpty() else local
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "")
+    val speechStatus = combine(voiceManager.status, agora.status, selectedEngine) { local, cloud, engine ->
+        if (engine == AiEngineType.AGORA_CONVERSATIONAL_CLOUD) cloud else local
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "")
 
     private val _isProcessing = MutableStateFlow(false)
     val isProcessing: StateFlow<Boolean> = _isProcessing.asStateFlow()
@@ -114,6 +126,7 @@ class KharchaBoloViewModel(application: Application) : AndroidViewModel(applicat
     fun submitHinglishPrompt(prompt: String) {
         val trimmed = prompt.trim()
         if (trimmed.isEmpty() || _isProcessing.value) return
+        if (_selectedEngine.value == AiEngineType.AGORA_CONVERSATIONAL_CLOUD) { agora.sendText(trimmed); return }
 
         viewModelScope.launch {
             _isProcessing.value = true
@@ -147,8 +160,22 @@ class KharchaBoloViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
+    private fun recordAgoraResult(result: AgentExecutionResult) {
+        _lastEngineUsed.value = "Agora cloud voice + local rules"
+        when (result) {
+            is AgentExecutionResult.LoggedExpenses -> { _lastAgentResponse.value = result.responseMessage; _lastLatencyMs.value = result.latencyMs }
+            is AgentExecutionResult.QueryResponse -> { _lastAgentResponse.value = result.responseMessage; _lastLatencyMs.value = result.latencyMs }
+            is AgentExecutionResult.Error -> _lastAgentResponse.value = result.message
+        }
+    }
+
     fun startVoiceInput() {
         if (_isProcessing.value) return
+        if (_selectedEngine.value == AiEngineType.AGORA_CONVERSATIONAL_CLOUD) {
+            voiceManager.cancel()
+            agora.start()
+            return
+        }
         voiceManager.startListening(
             onResult = { recognizedText ->
                 submitHinglishPrompt(recognizedText)
@@ -159,13 +186,15 @@ class KharchaBoloViewModel(application: Application) : AndroidViewModel(applicat
         )
     }
 
-    fun cancelVoiceInput() { voiceManager.cancel() }
+    fun cancelVoiceInput() { voiceManager.cancel(); if (agora.active.value || agora.busy.value) agora.stop() }
 
     fun stopVoiceInput() {
+        if (_selectedEngine.value == AiEngineType.AGORA_CONVERSATIONAL_CLOUD) { agora.stop(); return }
         voiceManager.stopListening()
     }
 
     fun toggleEngine(engine: AiEngineType) {
+        cancelVoiceInput()
         _selectedEngine.value = engine
     }
 
@@ -208,6 +237,7 @@ class KharchaBoloViewModel(application: Application) : AndroidViewModel(applicat
 
     override fun onCleared() {
         super.onCleared()
+        agora.close()
         voiceManager.close()
         soundHelper.release()
         networkMonitor.unregister()
